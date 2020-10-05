@@ -24,6 +24,7 @@ case class ArgConfig(
   iCacheSize : Int = 4096,
   dCacheSize : Int = 4096,
   mulDiv : Boolean = true,
+  cfu : Boolean = false,
   atomics: Boolean = false,
   compressedGen: Boolean = false,
   singleCycleMulDiv : Boolean = true,
@@ -60,6 +61,7 @@ object GenCoreDefault{
       // ex : -dCacheSize=XXX
       opt[Int]("dCacheSize")     action { (v, c) => c.copy(dCacheSize = v) } text("Set data cache size, 0 mean no cache")
       opt[Boolean]("mulDiv")    action { (v, c) => c.copy(mulDiv = v)   } text("set RV32IM")
+      opt[Boolean]("cfu")       action { (v, c) => c.copy(cfu = v)   } text("If true, add SIMD ADD custom function unit")
       opt[Boolean]("atomics")    action { (v, c) => c.copy(mulDiv = v)   } text("set RV32I[A]")
       opt[Boolean]("compressedGen")    action { (v, c) => c.copy(compressedGen = v)   } text("set RV32I[C]")
       opt[Boolean]("singleCycleMulDiv")    action { (v, c) => c.copy(singleCycleMulDiv = v)   } text("If true, MUL/DIV are single-cycle")
@@ -191,6 +193,35 @@ object GenCoreDefault{
         ),
         new YamlPlugin(argConfig.outputFile.concat(".yaml"))
       )
+
+      if(argConfig.cfu) {
+        plugins ++= List(
+          new CfuPlugin(
+            stageCount = 1,
+            allowZeroLatency = true,
+            encodings = List(
+              CfuPluginEncoding (
+                instruction = M"-------------------------0001011",
+                functionId = List(14 downto 12),
+                input2Kind = CfuPlugin.Input2Kind.RS
+              )
+            ),
+            busParameter = CfuBusParameter(
+              CFU_VERSION = 0,
+              CFU_INTERFACE_ID_W = 0,
+              CFU_FUNCTION_ID_W = 3,
+              CFU_REORDER_ID_W = 0,
+              CFU_REQ_RESP_ID_W = 0,
+              CFU_INPUTS = 2,
+              CFU_INPUT_DATA_W = 32,
+              CFU_OUTPUTS = 1,
+              CFU_OUTPUT_DATA_W = 32,
+              CFU_FLOW_REQ_READY_ALWAYS = false,
+              CFU_FLOW_RESP_READY_ALWAYS = false
+            )
+          )
+        )
+      }
 
       if(argConfig.mulDiv) {
         if(argConfig.singleCycleMulDiv) {

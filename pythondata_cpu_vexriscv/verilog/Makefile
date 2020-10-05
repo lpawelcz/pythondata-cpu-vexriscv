@@ -32,6 +32,12 @@ VexRiscv_Full.v: $(SRC)
 VexRiscv_FullDebug.v: $(SRC)
 	sbt compile "runMain vexriscv.GenCoreDefault --csrPluginConfig all -d --outputFile VexRiscv_FullDebug"
 
+VexRiscv_FullCfu.v: $(SRC)
+	sbt compile "runMain vexriscv.GenCoreDefault --csrPluginConfig all --cfu true --outputFile VexRiscv_FullCfu"
+
+VexRiscv_FullCfuDebug.v: $(SRC)
+	sbt compile "runMain vexriscv.GenCoreDefault --csrPluginConfig all -d --cfu true --outputFile VexRiscv_FullCfuDebug"
+
 VexRiscv_Linux.v: $(SRC)
 	sbt compile "runMain vexriscv.GenCoreDefault --csrPluginConfig linux-minimal --outputFile VexRiscv_Linux"
 
