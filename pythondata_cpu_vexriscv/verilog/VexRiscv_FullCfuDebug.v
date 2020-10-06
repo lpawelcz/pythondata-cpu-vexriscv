@@ -1,6 +1,6 @@
-// Generator : SpinalHDL v1.4.2    git head : 654057b2f5cec0f9fc99487dff67861f76fcbe7e
+// Generator : SpinalHDL v1.4.2    git head : f8290e79928d331d21410a57fea40abaca0e8d55
 // Component : VexRiscv
-// Git hash  : 654057b2f5cec0f9fc99487dff67861f76fcbe7e
+// Git hash  : f8290e79928d331d21410a57fea40abaca0e8d55
 
 
 `define Input2Kind_defaultEncoding_type [0:0]
@@ -48,7 +48,7 @@
 `define Src1CtrlEnum_defaultEncoding_URS1 2'b11
 
 
-module VexRiscv (
+module VexRiscv_inner (
   input      [31:0]   externalResetVector,
   input               timerInterrupt,
   input               softwareInterrupt,
