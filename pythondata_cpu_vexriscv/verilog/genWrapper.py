@@ -73,6 +73,8 @@ for pname in pnames:
     if re.match("CfuPlugin_bus", pname):
         print("    wire {:10} {};".format(ppins[pname], pname))
         last_cfu_port = pname
+    if pname == "clk":
+        last_cfu_port = pname
 print("\n\n")
 
 
@@ -92,9 +94,10 @@ print(");\n\n")
 #
 print("Cfu Cfu(")
 for pname in pnames:
-    if re.match("CfuPlugin_bus_", pname):
+    if re.match("CfuPlugin_bus_|^clk$", pname):
         parts = pname.split("_");
-        parts[0] = "io"
+        if parts[0] == "CfuPlugin":
+            parts[0] = "io"
         cfu_pname = "_".join(parts)
         comma = "," if (pname != last_cfu_port) else ""
         print("    .{}({}){}".format(cfu_pname, pname, comma))
