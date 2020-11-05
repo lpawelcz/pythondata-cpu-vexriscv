@@ -10,6 +10,7 @@ import vexriscv.plugin._
 
 import scala.collection.mutable.ArrayBuffer
 
+
 object SpinalConfig extends spinal.core.SpinalConfig(
   defaultConfigForClockDomains = ClockDomainConfig(
     resetKind = spinal.core.SYNC
@@ -25,6 +26,7 @@ case class ArgConfig(
   dCacheSize : Int = 4096,
   mulDiv : Boolean = true,
   cfu : Boolean = false,
+  perfCSRs : Int = 0,
   atomics: Boolean = false,
   compressedGen: Boolean = false,
   singleCycleMulDiv : Boolean = true,
@@ -62,6 +64,7 @@ object GenCoreDefault{
       opt[Int]("dCacheSize")     action { (v, c) => c.copy(dCacheSize = v) } text("Set data cache size, 0 mean no cache")
       opt[Boolean]("mulDiv")    action { (v, c) => c.copy(mulDiv = v)   } text("set RV32IM")
       opt[Boolean]("cfu")       action { (v, c) => c.copy(cfu = v)   } text("If true, add SIMD ADD custom function unit")
+      opt[Int]("perfCSRs")       action { (v, c) => c.copy(perfCSRs = v)   } text("Number of pausable performance counter CSRs to add (default 0)")
       opt[Boolean]("atomics")    action { (v, c) => c.copy(mulDiv = v)   } text("set RV32I[A]")
       opt[Boolean]("compressedGen")    action { (v, c) => c.copy(compressedGen = v)   } text("set RV32I[C]")
       opt[Boolean]("singleCycleMulDiv")    action { (v, c) => c.copy(singleCycleMulDiv = v)   } text("If true, MUL/DIV are single-cycle")
@@ -194,6 +197,11 @@ object GenCoreDefault{
         new YamlPlugin(argConfig.outputFile.concat(".yaml"))
       )
 
+      if(argConfig.perfCSRs > 0) {
+        plugins ++= List(
+          new PerfCsrPlugin(argConfig.perfCSRs)
+        )
+      }
       if(argConfig.cfu) {
         plugins ++= List(
           new CfuPlugin(
@@ -305,4 +313,28 @@ class ForceRamBlockPhase() extends spinal.core.internals.Phase{
     }
   }
   override def hasNetlistImpact: Boolean = false
+}
+
+
+class PerfCsrPlugin( val csrCount : Int ) extends Plugin[VexRiscv]{
+  override def build(pipeline: VexRiscv): Unit = {
+    import pipeline._
+    import pipeline.config._
+
+    pipeline plug new Area{
+      for (idx <- 0 until csrCount) {
+
+          val cycleCounter = Reg(UInt(32 bits))
+          val enable =       Reg(UInt(32 bits))   // only the LSB is used
+
+          when ( enable(0) ) {
+            cycleCounter := cycleCounter + 1
+          }
+
+          val csrService = pipeline.service(classOf[CsrInterface])
+          csrService.rw(0xB04 + idx * 2,     cycleCounter)
+          csrService.w( 0xB04 + idx * 2 + 1, enable)
+      }
+    }
+  }
 }
