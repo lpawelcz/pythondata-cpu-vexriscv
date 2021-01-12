@@ -34,14 +34,14 @@ VexRiscv_FullDebug.v: $(SRC)
 
 # CFU versions must have module name changed because they will be wrapped
 VexRiscv_FullCfu.v: $(SRC)
-	sbt compile "runMain vexriscv.GenCoreDefault --csrPluginConfig all --cfu true --perfCSRs 8 --outputFile VexRiscv_FullCfu"
+	sbt compile "runMain vexriscv.GenCoreDefault --dCacheSize 8192 --iCacheSize 8192 --csrPluginConfig all --cfu true --perfCSRs 8 --outputFile VexRiscv_FullCfu"
 	sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
 	/bin/mv tmp.v $@
 	./genWrapper.py $@ > wrap$@
 
 # CFU versions must have module name changed because they will be wrapped
 VexRiscv_FullCfuDebug.v: $(SRC)
-	sbt compile "runMain vexriscv.GenCoreDefault --csrPluginConfig all -d --cfu true --perfCSRs 8 --outputFile VexRiscv_FullCfuDebug"
+	sbt compile "runMain vexriscv.GenCoreDefault --dCacheSize 8192 --iCacheSize 8192 --csrPluginConfig all -d --cfu true --perfCSRs 8 --outputFile VexRiscv_FullCfuDebug"
 	sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
 	/bin/mv tmp.v $@
 	./genWrapper.py $@ > wrap$@
