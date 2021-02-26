@@ -210,16 +210,17 @@ object GenCoreDefault{
             encodings = List(
               CfuPluginEncoding (
                 instruction = M"-------------------------0001011",
-                functionId = List(14 downto 12),
+                functionId = List(31 downto 12),
                 input2Kind = CfuPlugin.Input2Kind.RS
               )
             ),
             busParameter = CfuBusParameter(
               CFU_VERSION = 0,
               CFU_INTERFACE_ID_W = 0,
-              CFU_FUNCTION_ID_W = 3,
+              CFU_FUNCTION_ID_W = 20,
               CFU_REORDER_ID_W = 0,
               CFU_REQ_RESP_ID_W = 0,
+              // CFU_STATE_INDEX_NUM = 0,
               CFU_INPUTS = 2,
               CFU_INPUT_DATA_W = 32,
               CFU_OUTPUTS = 1,

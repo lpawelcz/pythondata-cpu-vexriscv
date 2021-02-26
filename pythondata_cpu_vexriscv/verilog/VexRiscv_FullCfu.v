@@ -1,6 +1,6 @@
-// Generator : SpinalHDL v1.4.2    git head : f022529bb419c7a04f9ba1b61e931127b7220919
+// Generator : SpinalHDL v1.4.2    git head : 59f011da0a5ef9d5ed94ef2308e3df290d596e66
 // Component : VexRiscv
-// Git hash  : f022529bb419c7a04f9ba1b61e931127b7220919
+// Git hash  : 59f011da0a5ef9d5ed94ef2308e3df290d596e66
 
 
 `define Input2Kind_defaultEncoding_type [0:0]
@@ -54,7 +54,7 @@ module VexRiscv_inner (
   input               softwareInterrupt,
   output              CfuPlugin_bus_cmd_valid,
   input               CfuPlugin_bus_cmd_ready,
-  output     [2:0]    CfuPlugin_bus_cmd_payload_function_id,
+  output     [19:0]   CfuPlugin_bus_cmd_payload_function_id,
   output     [31:0]   CfuPlugin_bus_cmd_payload_inputs_0,
   output     [31:0]   CfuPlugin_bus_cmd_payload_inputs_1,
   input               CfuPlugin_bus_rsp_valid,
@@ -255,7 +255,7 @@ module VexRiscv_inner (
   wire       [1:0]    _zz_347;
   wire       [1:0]    _zz_348;
   wire       [1:0]    _zz_349;
-  wire       [2:0]    _zz_350;
+  wire       [19:0]   _zz_350;
   wire       [11:0]   _zz_351;
   wire       [65:0]   _zz_352;
   wire       [65:0]   _zz_353;
@@ -1087,7 +1087,7 @@ module VexRiscv_inner (
   wire                execute_CfuPlugin_schedule;
   reg                 execute_CfuPlugin_hold;
   reg                 execute_CfuPlugin_fired;
-  wire       [2:0]    execute_CfuPlugin_functionsIds_0;
+  wire       [19:0]   execute_CfuPlugin_functionsIds_0;
   wire                _zz_165;
   reg        [19:0]   _zz_166;
   reg        [31:0]   _zz_167;
@@ -1475,7 +1475,7 @@ module VexRiscv_inner (
   assign _zz_347 = (_zz_145 - 2'b01);
   assign _zz_348 = (_zz_147 & (~ _zz_349));
   assign _zz_349 = (_zz_147 - 2'b01);
-  assign _zz_350 = execute_INSTRUCTION[14 : 12];
+  assign _zz_350 = execute_INSTRUCTION[31 : 12];
   assign _zz_351 = execute_INSTRUCTION[31 : 20];
   assign _zz_352 = {{14{writeBack_MUL_LOW[51]}}, writeBack_MUL_LOW};
   assign _zz_353 = ({32'd0,writeBack_MUL_HH} <<< 32);
