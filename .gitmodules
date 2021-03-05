@@ -1,8 +1,4 @@
 [submodule "pythondata_cpu_vexriscv/verilog/ext/VexRiscv"]
 	path = pythondata_cpu_vexriscv/verilog/ext/VexRiscv
 	url = https://github.com/SpinalHDL/VexRiscv.git
-	branch = dev
-[submodule "pythondata_cpu_vexriscv/verilog/ext/SpinalHDL"]
-	path = pythondata_cpu_vexriscv/verilog/ext/SpinalHDL
-	url = https://github.com/SpinalHDL/SpinalHDL.git
-	branch = dev
+	branch = master
