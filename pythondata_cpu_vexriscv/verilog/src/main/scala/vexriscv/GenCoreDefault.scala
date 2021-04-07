@@ -208,16 +208,23 @@ object GenCoreDefault{
             stageCount = 1,
             allowZeroLatency = true,
             encodings = List(
+              // CFU R-type
               CfuPluginEncoding (
                 instruction = M"-------------------------0001011",
-                functionId = List(31 downto 12),
+                functionId = List(31 downto 25, 14 downto 12),
                 input2Kind = CfuPlugin.Input2Kind.RS
+              ),
+              // CFU I-type
+              CfuPluginEncoding (
+                instruction = M"-----------------000-----0101011",
+                functionId = List(23 downto 20),
+                input2Kind = CfuPlugin.Input2Kind.IMM_I
               )
             ),
             busParameter = CfuBusParameter(
               CFU_VERSION = 0,
               CFU_INTERFACE_ID_W = 0,
-              CFU_FUNCTION_ID_W = 20,
+              CFU_FUNCTION_ID_W = 10,
               CFU_REORDER_ID_W = 0,
               CFU_REQ_RESP_ID_W = 0,
               CFU_STATE_INDEX_NUM = 0,
