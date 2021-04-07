@@ -36,7 +36,7 @@ module VexRiscv (
 
     wire            CfuPlugin_bus_cmd_valid;
     wire            CfuPlugin_bus_cmd_ready;
-    wire [19:0]     CfuPlugin_bus_cmd_payload_function_id;
+    wire [9:0]      CfuPlugin_bus_cmd_payload_function_id;
     wire [31:0]     CfuPlugin_bus_cmd_payload_inputs_0;
     wire [31:0]     CfuPlugin_bus_cmd_payload_inputs_1;
     wire            CfuPlugin_bus_rsp_valid;

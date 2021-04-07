@@ -183,7 +183,8 @@ object GenCoreDefault{
           pessimisticAddressMatch = false
         ),
         new BranchPlugin(
-          earlyBranch = false,
+          // If using CFU, use earlyBranch to avoid incorrect CFU execution
+          earlyBranch = argConfig.cfu,
           catchAddressMisaligned = true
         ),
         new CsrPlugin(
@@ -211,7 +212,7 @@ object GenCoreDefault{
               // CFU R-type
               CfuPluginEncoding (
                 instruction = M"-------------------------0001011",
-                functionId = List(31 downto 25, 14 downto 12),
+                functionId = List(14 downto 12, 31 downto 25),
                 input2Kind = CfuPlugin.Input2Kind.RS
               ),
               // CFU I-type
