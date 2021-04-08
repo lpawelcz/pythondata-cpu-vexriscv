@@ -214,13 +214,14 @@ object GenCoreDefault{
                 instruction = M"-------------------------0001011",
                 functionId = List(14 downto 12, 31 downto 25),
                 input2Kind = CfuPlugin.Input2Kind.RS
-              ),
-              // CFU I-type
-              CfuPluginEncoding (
-                instruction = M"-----------------000-----0101011",
-                functionId = List(23 downto 20),
-                input2Kind = CfuPlugin.Input2Kind.IMM_I
               )
+              //,
+              // CFU I-type
+              //CfuPluginEncoding (
+              //  instruction = M"-----------------000-----0101011",
+              //  functionId = List(23 downto 20),
+              //  input2Kind = CfuPlugin.Input2Kind.IMM_I
+              //)
             ),
             busParameter = CfuBusParameter(
               CFU_VERSION = 0,
