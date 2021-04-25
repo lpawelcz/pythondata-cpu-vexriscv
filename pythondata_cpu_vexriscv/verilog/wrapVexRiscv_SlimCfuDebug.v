@@ -1,5 +1,5 @@
 //
-// wrapper auto-generated from VexRiscv_FullCfuDebug.v
+// wrapper auto-generated from VexRiscv_SlimCfuDebug.v
 //
 
 module VexRiscv (

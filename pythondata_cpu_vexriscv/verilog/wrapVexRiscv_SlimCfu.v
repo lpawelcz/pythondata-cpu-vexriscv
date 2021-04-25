@@ -1,5 +1,5 @@
 //
-// wrapper auto-generated from VexRiscv_FullCfuDebug.v
+// wrapper auto-generated from VexRiscv_SlimCfu.v
 //
 
 module VexRiscv (
@@ -7,13 +7,6 @@ module VexRiscv (
     input                 timerInterrupt,
     input                 softwareInterrupt,
     input      [31:0]     externalInterruptArray,
-    input                 debug_bus_cmd_valid,
-    output                debug_bus_cmd_ready,
-    input                 debug_bus_cmd_payload_wr,
-    input      [7:0]      debug_bus_cmd_payload_address,
-    input      [31:0]     debug_bus_cmd_payload_data,
-    output     [31:0]     debug_bus_rsp_data,
-    output                debug_resetOut,
     output                iBusWishbone_CYC,
     output                iBusWishbone_STB,
     input                 iBusWishbone_ACK,
@@ -37,8 +30,7 @@ module VexRiscv (
     output     [2:0]      dBusWishbone_CTI,
     output     [1:0]      dBusWishbone_BTE,
     input                 clk,
-    input                 reset,
-    input                 debugReset
+    input                 reset
 );
 
 
@@ -68,13 +60,6 @@ VexRiscv_inner VexRiscv_inner(
     .CfuPlugin_bus_rsp_payload_response_ok(CfuPlugin_bus_rsp_payload_response_ok),
     .CfuPlugin_bus_rsp_payload_outputs_0(CfuPlugin_bus_rsp_payload_outputs_0),
     .externalInterruptArray(externalInterruptArray),
-    .debug_bus_cmd_valid(debug_bus_cmd_valid),
-    .debug_bus_cmd_ready(debug_bus_cmd_ready),
-    .debug_bus_cmd_payload_wr(debug_bus_cmd_payload_wr),
-    .debug_bus_cmd_payload_address(debug_bus_cmd_payload_address),
-    .debug_bus_cmd_payload_data(debug_bus_cmd_payload_data),
-    .debug_bus_rsp_data(debug_bus_rsp_data),
-    .debug_resetOut(debug_resetOut),
     .iBusWishbone_CYC(iBusWishbone_CYC),
     .iBusWishbone_STB(iBusWishbone_STB),
     .iBusWishbone_ACK(iBusWishbone_ACK),
@@ -98,8 +83,7 @@ VexRiscv_inner VexRiscv_inner(
     .dBusWishbone_CTI(dBusWishbone_CTI),
     .dBusWishbone_BTE(dBusWishbone_BTE),
     .clk(clk),
-    .reset(reset),
-    .debugReset(debugReset)
+    .reset(reset)
 );
 
 

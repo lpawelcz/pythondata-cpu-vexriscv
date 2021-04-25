@@ -1,6 +1,6 @@
 SRC := ${shell find . -type f -name \*.scala}
 
-all: VexRiscv.v VexRiscv_Debug.v VexRiscv_Lite.v VexRiscv_LiteDebug.v VexRiscv_IMAC.v VexRiscv_IMACDebug.v VexRiscv_Min.v VexRiscv_MinDebug.v VexRiscv_Full.v VexRiscv_FullDebug.v VexRiscv_Linux.v VexRiscv_LinuxDebug.v VexRiscv_LinuxNoDspFmax.v VexRiscv_FullCfu.v VexRiscv_FullCfuDebug.v
+all: VexRiscv.v VexRiscv_Debug.v VexRiscv_Lite.v VexRiscv_LiteDebug.v VexRiscv_IMAC.v VexRiscv_IMACDebug.v VexRiscv_Min.v VexRiscv_MinDebug.v VexRiscv_Full.v VexRiscv_FullDebug.v VexRiscv_Linux.v VexRiscv_LinuxDebug.v VexRiscv_LinuxNoDspFmax.v VexRiscv_FullCfu.v VexRiscv_FullCfuDebug.v VexRiscv_SlimCfu.v VexRiscv_SlimCfuDebug.v
 
 VexRiscv.v: $(SRC)
 	sbt compile "runMain vexriscv.GenCoreDefault"
@@ -42,6 +42,20 @@ VexRiscv_FullCfu.v: $(SRC)
 # CFU versions must have module name changed because they will be wrapped
 VexRiscv_FullCfuDebug.v: $(SRC)
 	sbt compile "runMain vexriscv.GenCoreDefault --dCacheSize 8192 --iCacheSize 8192 --csrPluginConfig all -d --cfu true --perfCSRs 8 --outputFile VexRiscv_FullCfuDebug"
+	sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
+	/bin/mv tmp.v $@
+	./genWrapper.py $@ > wrap$@
+
+# CFU versions must have module name changed because they will be wrapped
+VexRiscv_SlimCfu.v: $(SRC)
+	sbt compile "runMain vexriscv.GenCoreDefault --dCacheSize 0 --iCacheSize 2048 --csrPluginConfig all --cfu true --perfCSRs 8 --outputFile VexRiscv_SlimCfu"
+	sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
+	/bin/mv tmp.v $@
+	./genWrapper.py $@ > wrap$@
+
+# CFU versions must have module name changed because they will be wrapped
+VexRiscv_SlimCfuDebug.v: $(SRC)
+	sbt compile "runMain vexriscv.GenCoreDefault --dCacheSize 0 --iCacheSize 2048 --csrPluginConfig all -d --cfu true --perfCSRs 8 --outputFile VexRiscv_SlimCfuDebug"
 	sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
 	/bin/mv tmp.v $@
 	./genWrapper.py $@ > wrap$@

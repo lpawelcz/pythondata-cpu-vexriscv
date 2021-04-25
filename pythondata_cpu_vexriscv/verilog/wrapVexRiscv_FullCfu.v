@@ -97,7 +97,8 @@ Cfu Cfu(
     .io_bus_rsp_ready(CfuPlugin_bus_rsp_ready),
     .io_bus_rsp_payload_response_ok(CfuPlugin_bus_rsp_payload_response_ok),
     .io_bus_rsp_payload_outputs_0(CfuPlugin_bus_rsp_payload_outputs_0),
-    .clk(clk)
+    .clk(clk),
+    .rst(reset)
 );
 
 
