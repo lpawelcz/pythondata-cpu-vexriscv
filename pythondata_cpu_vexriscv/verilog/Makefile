@@ -1,6 +1,6 @@
 SRC := ${shell find . -type f -name \*.scala}
 
-all: VexRiscv.v VexRiscv_Debug.v VexRiscv_Lite.v VexRiscv_LiteDebug.v VexRiscv_IMAC.v VexRiscv_IMACDebug.v VexRiscv_Min.v VexRiscv_MinDebug.v VexRiscv_Full.v VexRiscv_FullDebug.v VexRiscv_Linux.v VexRiscv_LinuxDebug.v VexRiscv_LinuxNoDspFmax.v VexRiscv_FullCfu.v VexRiscv_FullCfuDebug.v VexRiscv_SlimCfu.v VexRiscv_SlimCfuDebug.v
+all: VexRiscv.v VexRiscv_Debug.v VexRiscv_Lite.v VexRiscv_LiteDebug.v VexRiscv_IMAC.v VexRiscv_IMACDebug.v VexRiscv_Min.v VexRiscv_MinDebug.v VexRiscv_Full.v VexRiscv_FullDebug.v VexRiscv_Linux.v VexRiscv_LinuxDebug.v VexRiscv_LinuxNoDspFmax.v VexRiscv_FullCfu.v VexRiscv_FullCfuDebug.v VexRiscv_SlimCfu.v VexRiscv_SlimCfuDebug.v VexRiscv_LiteCfu.v VexRiscv_LiteCfuDebug.v
 
 VexRiscv.v: $(SRC)
 	sbt compile "runMain vexriscv.GenCoreDefault"
@@ -56,6 +56,20 @@ VexRiscv_SlimCfu.v: $(SRC)
 # CFU versions must have module name changed because they will be wrapped
 VexRiscv_SlimCfuDebug.v: $(SRC)
 	sbt compile "runMain vexriscv.GenCoreDefault --dCacheSize 0 --iCacheSize 1024 --csrPluginConfig all -d --cfu true --perfCSRs 8 --outputFile VexRiscv_SlimCfuDebug"
+	sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
+	/bin/mv tmp.v $@
+	./genWrapper.py $@ > wrap$@
+
+# CFU versions must have module name changed because they will be wrapped
+VexRiscv_LiteCfu.v: $(SRC)
+	sbt compile "runMain vexriscv.GenCoreDefault --iCacheSize 1024 --dCacheSize 0 --mulDiv true --singleCycleShift false --singleCycleMulDiv false --csrPluginConfig all --cfu true --perfCSRs 8 --outputFile VexRiscv_LiteCfu"
+	sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
+	/bin/mv tmp.v $@
+	./genWrapper.py $@ > wrap$@
+
+# CFU versions must have module name changed because they will be wrapped
+VexRiscv_LiteCfuDebug.v: $(SRC)
+	sbt compile "runMain vexriscv.GenCoreDefault --iCacheSize 1024 --dCacheSize 0 --mulDiv true --singleCycleShift false --singleCycleMulDiv false --csrPluginConfig all -d --cfu true --perfCSRs 8 --outputFile VexRiscv_LiteCfuDebug"
 	sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
 	/bin/mv tmp.v $@
 	./genWrapper.py $@ > wrap$@
