@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.4.3    git head : adf552d8f500e7419fff395b7049228e4bc5de26
 // Component : VexRiscv
-// Git hash  : eafff82697ae47892bb4654e4bb7d282a4b9807c
+// Git hash  : 23e1a663078814ceb7b7be183060be863ea8d149
 
 
 `define Input2Kind_defaultEncoding_type [0:0]

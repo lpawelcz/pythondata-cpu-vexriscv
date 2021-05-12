@@ -60,16 +60,30 @@ VexRiscv_SlimCfuDebug.v: $(SRC)
 	/bin/mv tmp.v $@
 	./genWrapper.py $@ > wrap$@
 
+## CFU versions must have module name changed because they will be wrapped
+#VexRiscv_LiteCfu.v: $(SRC)
+	#sbt compile "runMain vexriscv.GenCoreDefault --iCacheSize 1024 --dCacheSize 0 --mulDiv true --singleCycleShift false --singleCycleMulDiv false --csrPluginConfig all --cfu true --perfCSRs 8 --outputFile VexRiscv_LiteCfu"
+	#sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
+	#/bin/mv tmp.v $@
+	#./genWrapper.py $@ > wrap$@
+
+## CFU versions must have module name changed because they will be wrapped
+#VexRiscv_LiteCfuDebug.v: $(SRC)
+	#sbt compile "runMain vexriscv.GenCoreDefault --iCacheSize 1024 --dCacheSize 0 --mulDiv true --singleCycleShift false --singleCycleMulDiv false --csrPluginConfig all -d --cfu true --perfCSRs 8 --outputFile VexRiscv_LiteCfuDebug"
+	#sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
+	#/bin/mv tmp.v $@
+	#./genWrapper.py $@ > wrap$@
+
 # CFU versions must have module name changed because they will be wrapped
 VexRiscv_LiteCfu.v: $(SRC)
-	sbt compile "runMain vexriscv.GenCoreDefault --iCacheSize 1024 --dCacheSize 0 --mulDiv true --singleCycleShift false --singleCycleMulDiv false --csrPluginConfig all --cfu true --perfCSRs 8 --outputFile VexRiscv_LiteCfu"
+	sbt compile "runMain vexriscv.GenCoreDefault --dCacheSize 0 --iCacheSize 1024 --singleCycleMulDiv false --prediction none --bypass false --csrPluginConfig all --cfu true --perfCSRs 8 --outputFile VexRiscv_LiteCfu"
 	sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
 	/bin/mv tmp.v $@
 	./genWrapper.py $@ > wrap$@
 
 # CFU versions must have module name changed because they will be wrapped
 VexRiscv_LiteCfuDebug.v: $(SRC)
-	sbt compile "runMain vexriscv.GenCoreDefault --iCacheSize 1024 --dCacheSize 0 --mulDiv true --singleCycleShift false --singleCycleMulDiv false --csrPluginConfig all -d --cfu true --perfCSRs 8 --outputFile VexRiscv_LiteCfuDebug"
+	sbt compile "runMain vexriscv.GenCoreDefault --dCacheSize 0 --iCacheSize 1024 --singleCycleMulDiv false --prediction none --bypass false --csrPluginConfig all -d --cfu true --perfCSRs 8 --outputFile VexRiscv_LiteCfuDebug"
 	sed -e 's/module VexRiscv/module VexRiscv_inner/' $@ > tmp.v
 	/bin/mv tmp.v $@
 	./genWrapper.py $@ > wrap$@
